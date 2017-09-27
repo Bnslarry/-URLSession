@@ -72,18 +72,18 @@ class SearchViewController: UIViewController {
     return url!
   }
   
-  func parse(json data: Data) -> [String: AnyObject]? {
+  func parse(json data: Data) -> [String: Any]? {
     do {
-      return try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
+      return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
     } catch {
       print("JSON Error: \(error)")
       return nil
     }
   }
   
-  func parse(dictionary: [String: AnyObject]) -> [SearchResult] {
+  func parse(dictionary: [String: Any]) -> [SearchResult] {
   
-    guard let array = dictionary["results"] as? [AnyObject] else {
+    guard let array = dictionary["results"] as? [Any] else {
       print("Expected 'results' array")
       return []
     }
@@ -91,7 +91,7 @@ class SearchViewController: UIViewController {
     var searchResults: [SearchResult] = []
     
     for resultDict in array {
-      if let resultDict = resultDict as? [String: AnyObject] {
+      if let resultDict = resultDict as? [String: Any] {
 
         var searchResult: SearchResult?
         
@@ -119,7 +119,7 @@ class SearchViewController: UIViewController {
     return searchResults
   }
   
-  func parse(track dictionary: [String: AnyObject]) -> SearchResult {
+  func parse(track dictionary: [String: Any]) -> SearchResult {
     let searchResult = SearchResult()
     
     searchResult.name = dictionary["trackName"] as! String
@@ -139,7 +139,7 @@ class SearchViewController: UIViewController {
     return searchResult
   }
 
-  func parse(audiobook dictionary: [String: AnyObject]) -> SearchResult {
+  func parse(audiobook dictionary: [String: Any]) -> SearchResult {
     let searchResult = SearchResult()
     searchResult.name = dictionary["collectionName"] as! String
     searchResult.artistName = dictionary["artistName"] as! String
@@ -158,7 +158,7 @@ class SearchViewController: UIViewController {
     return searchResult
   }
 
-  func parse(software dictionary: [String: AnyObject]) -> SearchResult {
+  func parse(software dictionary: [String: Any]) -> SearchResult {
     let searchResult = SearchResult()
     searchResult.name = dictionary["trackName"] as! String
     searchResult.artistName = dictionary["artistName"] as! String
@@ -177,7 +177,7 @@ class SearchViewController: UIViewController {
     return searchResult
   }
 
-  func parse(ebook dictionary: [String: AnyObject]) -> SearchResult {
+  func parse(ebook dictionary: [String: Any]) -> SearchResult {
     let searchResult = SearchResult()
     searchResult.name = dictionary["trackName"] as! String
     searchResult.artistName = dictionary["artistName"] as! String
@@ -190,7 +190,7 @@ class SearchViewController: UIViewController {
     if let price = dictionary["price"] as? Double {
       searchResult.price = price
     }
-    if let genres: AnyObject = dictionary["genres"] {
+    if let genres: Any = dictionary["genres"] {
       searchResult.genre = (genres as! [String]).joined(separator: ", ")
     }
     return searchResult
@@ -250,7 +250,7 @@ extension SearchViewController: UISearchBarDelegate {
             return
           }
         } else {
-          print("Failure! \(response!)")
+          print("Failure! \(response)")
         }
         
         DispatchQueue.main.async {
